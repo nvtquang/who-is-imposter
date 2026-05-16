@@ -387,6 +387,14 @@
       font-weight: 700;
     }
 
+    .screen-back {
+      width: fit-content;
+      margin-bottom: 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
     .counter-ring {
       width: 112px;
       aspect-ratio: 1;
@@ -785,6 +793,7 @@
 
     <section id="rolesScreen" class="screen">
       <div class="role-wrap">
+        <button class="ghost-btn screen-back" id="backToSetupBtn" type="button">← Quay lại cài đặt</button>
         <div class="panel game-status">
           <div>
             <p class="status-kicker">Xem vai bí mật</p>
@@ -799,6 +808,7 @@
 
     <section id="discussionScreen" class="screen">
       <div class="panel discussion">
+        <button class="ghost-btn screen-back" id="backToRolesBtn" type="button">← Quay lại xem vai</button>
         <h2 class="big-title">Bắt đầu thảo luận</h2>
         <p class="big-copy">Mọi người hãy đặt câu hỏi, mô tả vòng vo, phản biện và tìm ra ai là Imposter trước khi lộ quá nhiều gợi ý.</p>
         <button class="danger-btn" id="showResultBtn" type="button">Hiển thị kẻ mạo danh</button>
@@ -836,7 +846,10 @@
       <p class="secret-for" id="secretFor"></p>
       <h2 class="secret-word" id="secretWord"></h2>
       <div class="secret-topic" id="secretTopic"></div>
-      <button class="primary-btn" id="hideRoleBtn" type="button">Ẩn lại</button>
+      <div class="footer-actions">
+        <button class="primary-btn" id="hideRoleBtn" type="button">Ẩn lại</button>
+        <button class="ghost-btn" id="cancelRoleBtn" type="button">Quay lại</button>
+      </div>
     </div>
   </div>
 
@@ -902,6 +915,7 @@
       secretWord: $("#secretWord"),
       secretTopic: $("#secretTopic"),
       hideRoleBtn: $("#hideRoleBtn"),
+      cancelRoleBtn: $("#cancelRoleBtn"),
       resultCard: $("#resultCard"),
       resultImposters: $("#resultImposters"),
       resultWord: $("#resultWord"),
@@ -1121,6 +1135,12 @@
       }
     }
 
+    function cancelRoleView() {
+      activeRoleIndex = null;
+      els.roleModal.classList.remove("open");
+      document.body.style.overflow = "";
+    }
+
     function revealResult() {
       els.resultImposters.textContent = game.imposterIndexes.map((index) => game.players[index]).join(", ");
       els.resultWord.textContent = game.word;
@@ -1167,9 +1187,12 @@
     $("#quickStartBtn").addEventListener("click", () => startGame(true));
     $("#shareRulesBtn").addEventListener("click", copyRules);
     $("#hideRoleBtn").addEventListener("click", hideRole);
+    $("#cancelRoleBtn").addEventListener("click", cancelRoleView);
     $("#showResultBtn").addEventListener("click", revealResult);
     $("#playAgainBtn").addEventListener("click", () => startGame(false));
     $("#backSetupBtn").addEventListener("click", () => showScreen(els.setupScreen));
+    $("#backToSetupBtn").addEventListener("click", () => showScreen(els.setupScreen));
+    $("#backToRolesBtn").addEventListener("click", () => showScreen(els.rolesScreen));
     $("#guideBtn").addEventListener("click", openGuide);
     $("#closeGuideBtn").addEventListener("click", closeGuide);
 
@@ -1195,6 +1218,7 @@
 
     window.addEventListener("keydown", (event) => {
       if (event.key === "Escape") {
+        if (els.roleModal.classList.contains("open")) cancelRoleView();
         if (els.guideModal.classList.contains("open")) closeGuide();
       }
     });
