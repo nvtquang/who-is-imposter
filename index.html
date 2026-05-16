@@ -1,0 +1,1206 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Who Is Imposter</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #080914;
+      --panel: rgba(20, 22, 44, 0.78);
+      --panel-strong: rgba(29, 33, 67, 0.92);
+      --text: #f7f7ff;
+      --muted: #a9acc8;
+      --pink: #ff3ea5;
+      --cyan: #21e6ff;
+      --lime: #b9ff4d;
+      --yellow: #ffd166;
+      --danger: #ff5578;
+      --ok: #43f2a3;
+      --line: rgba(255, 255, 255, 0.14);
+      --shadow: 0 22px 80px rgba(0, 0, 0, 0.42);
+      --radius: 22px;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-height: 100%;
+      background: var(--bg);
+    }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      color: var(--text);
+      overflow-x: hidden;
+      background:
+        radial-gradient(circle at 18% 8%, rgba(255, 62, 165, 0.32), transparent 28rem),
+        radial-gradient(circle at 82% 0%, rgba(33, 230, 255, 0.26), transparent 26rem),
+        radial-gradient(circle at 50% 90%, rgba(185, 255, 77, 0.13), transparent 24rem),
+        linear-gradient(135deg, #080914 0%, #11122a 50%, #080914 100%);
+    }
+
+    button, input, select {
+      font: inherit;
+    }
+
+    button {
+      border: 0;
+      cursor: pointer;
+      color: inherit;
+    }
+
+    .app {
+      width: min(1120px, 100%);
+      min-height: 100vh;
+      margin: 0 auto;
+      padding: 24px clamp(14px, 3vw, 28px) 34px;
+      position: relative;
+    }
+
+    .noise {
+      pointer-events: none;
+      position: fixed;
+      inset: 0;
+      opacity: 0.08;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+      background-size: 38px 38px;
+      mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.8), transparent);
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 22px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .mark {
+      width: 46px;
+      height: 46px;
+      display: grid;
+      place-items: center;
+      border-radius: 16px;
+      background: linear-gradient(135deg, var(--pink), var(--cyan));
+      box-shadow: 0 0 32px rgba(255, 62, 165, 0.42), inset 0 0 14px rgba(255, 255, 255, 0.24);
+      font-size: 24px;
+      font-weight: 950;
+      transform: rotate(-6deg);
+    }
+
+    .brand-title {
+      margin: 0;
+      font-size: clamp(1.35rem, 4vw, 2.5rem);
+      line-height: 0.92;
+      letter-spacing: 0;
+      font-weight: 950;
+      text-transform: uppercase;
+      text-shadow: 0 0 28px rgba(33, 230, 255, 0.36);
+    }
+
+    .brand-sub {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-weight: 700;
+      font-size: 0.88rem;
+    }
+
+    .icon-btn, .ghost-btn, .primary-btn, .danger-btn {
+      min-height: 46px;
+      border-radius: 14px;
+      transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease, opacity 160ms ease;
+      user-select: none;
+    }
+
+    .icon-btn:hover, .ghost-btn:hover, .primary-btn:hover, .danger-btn:hover {
+      transform: translateY(-2px) scale(1.01);
+    }
+
+    .icon-btn:active, .ghost-btn:active, .primary-btn:active, .danger-btn:active {
+      transform: translateY(1px) scale(0.98);
+    }
+
+    .icon-btn {
+      width: 46px;
+      display: grid;
+      place-items: center;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--line);
+      font-size: 1.2rem;
+    }
+
+    .ghost-btn {
+      padding: 0 16px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--line);
+      color: var(--text);
+      font-weight: 800;
+    }
+
+    .primary-btn {
+      width: 100%;
+      padding: 0 22px;
+      background: linear-gradient(135deg, var(--pink), #8d5cff 48%, var(--cyan));
+      box-shadow: 0 12px 36px rgba(255, 62, 165, 0.3), 0 0 28px rgba(33, 230, 255, 0.22);
+      color: white;
+      font-weight: 950;
+      text-transform: uppercase;
+      letter-spacing: 0;
+    }
+
+    .danger-btn {
+      width: 100%;
+      padding: 0 22px;
+      background: linear-gradient(135deg, #ff315f, #ff9f1c);
+      box-shadow: 0 14px 42px rgba(255, 85, 120, 0.34);
+      color: white;
+      font-weight: 950;
+      text-transform: uppercase;
+    }
+
+    .screen {
+      display: none;
+      animation: screenIn 360ms ease both;
+    }
+
+    .screen.active {
+      display: block;
+    }
+
+    @keyframes screenIn {
+      from { opacity: 0; transform: translateY(14px) scale(0.99); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.03fr 0.97fr;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .panel {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+    }
+
+    .panel::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.12), transparent 32%, rgba(33, 230, 255, 0.08));
+      opacity: 0.72;
+    }
+
+    .panel > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .setup-card {
+      padding: clamp(18px, 3vw, 26px);
+    }
+
+    .section-title {
+      margin: 0 0 14px;
+      font-size: 1.02rem;
+      text-transform: uppercase;
+      font-weight: 950;
+      color: #ffffff;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .field {
+      display: grid;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    label {
+      color: var(--muted);
+      font-size: 0.9rem;
+      font-weight: 800;
+    }
+
+    input, select {
+      width: 100%;
+      min-height: 48px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 0 14px;
+      outline: 0;
+      background: rgba(5, 7, 18, 0.56);
+      color: var(--text);
+      font-weight: 800;
+      transition: border 160ms ease, box-shadow 160ms ease, background 160ms ease;
+    }
+
+    input:focus, select:focus {
+      border-color: rgba(33, 230, 255, 0.72);
+      box-shadow: 0 0 0 4px rgba(33, 230, 255, 0.12);
+      background: rgba(5, 7, 18, 0.72);
+    }
+
+    .topic-row {
+      margin-top: 14px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .players-card {
+      padding: clamp(18px, 3vw, 26px);
+    }
+
+    .players-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .small-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .player-list {
+      display: grid;
+      gap: 10px;
+      max-height: 56vh;
+      overflow: auto;
+      padding-right: 4px;
+    }
+
+    .player-row {
+      display: grid;
+      grid-template-columns: 1fr 46px;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .player-row .icon-btn {
+      background: rgba(255, 85, 120, 0.14);
+    }
+
+    .tip-card {
+      margin-top: 18px;
+      padding: 18px;
+      display: grid;
+      gap: 11px;
+      background: linear-gradient(135deg, rgba(255, 62, 165, 0.18), rgba(33, 230, 255, 0.12));
+    }
+
+    .tip-line {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      color: var(--muted);
+      font-weight: 700;
+      line-height: 1.45;
+    }
+
+    .tip-line b {
+      color: var(--text);
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 30px;
+      height: 30px;
+      border-radius: 999px;
+      background: rgba(33, 230, 255, 0.14);
+      color: var(--cyan);
+      font-weight: 950;
+      flex: 0 0 auto;
+    }
+
+    .role-wrap {
+      display: grid;
+      gap: 18px;
+    }
+
+    .game-status {
+      padding: clamp(18px, 3vw, 24px);
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .status-kicker {
+      margin: 0 0 8px;
+      color: var(--cyan);
+      text-transform: uppercase;
+      font-weight: 950;
+      font-size: 0.82rem;
+    }
+
+    .status-title {
+      margin: 0;
+      font-size: clamp(1.35rem, 5vw, 2.6rem);
+      line-height: 1.02;
+      font-weight: 950;
+    }
+
+    .status-copy {
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .counter-ring {
+      width: 112px;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background:
+        radial-gradient(circle, rgba(8, 9, 20, 0.9) 55%, transparent 56%),
+        conic-gradient(var(--lime) var(--progress), rgba(255, 255, 255, 0.12) 0);
+      box-shadow: inset 0 0 24px rgba(255, 255, 255, 0.08), 0 0 32px rgba(185, 255, 77, 0.18);
+      font-weight: 950;
+      color: var(--lime);
+      font-size: 1.35rem;
+    }
+
+    .role-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 12px;
+    }
+
+    .role-player {
+      min-height: 78px;
+      padding: 14px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--line);
+      text-align: left;
+      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.22);
+      transition: transform 160ms ease, background 160ms ease, border 160ms ease, box-shadow 160ms ease;
+    }
+
+    .role-player:hover:not(:disabled) {
+      transform: translateY(-4px);
+      border-color: rgba(33, 230, 255, 0.65);
+      box-shadow: 0 18px 42px rgba(33, 230, 255, 0.12);
+    }
+
+    .role-player:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
+    .role-player.seen {
+      background: linear-gradient(135deg, rgba(67, 242, 163, 0.18), rgba(33, 230, 255, 0.09));
+      border-color: rgba(67, 242, 163, 0.42);
+    }
+
+    .role-name {
+      display: block;
+      font-size: 1.1rem;
+      font-weight: 950;
+      overflow-wrap: anywhere;
+    }
+
+    .role-state {
+      display: block;
+      color: var(--muted);
+      margin-top: 6px;
+      font-size: 0.88rem;
+      font-weight: 800;
+    }
+
+    .role-player.seen .role-state {
+      color: var(--ok);
+    }
+
+    .role-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 20;
+      display: none;
+      place-items: center;
+      padding: 18px;
+      background: rgba(2, 3, 9, 0.78);
+      backdrop-filter: blur(16px);
+    }
+
+    .role-modal.open {
+      display: grid;
+      animation: fadeIn 180ms ease both;
+    }
+
+    .secret-card {
+      width: min(520px, 100%);
+      padding: clamp(22px, 6vw, 36px);
+      text-align: center;
+      border-radius: 28px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      background:
+        radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.16), transparent 18rem),
+        linear-gradient(145deg, rgba(26, 29, 59, 0.98), rgba(10, 12, 31, 0.98));
+      box-shadow: 0 28px 110px rgba(0, 0, 0, 0.6), 0 0 54px rgba(255, 62, 165, 0.22);
+      animation: popIn 260ms cubic-bezier(.2, .9, .2, 1.15) both;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes popIn {
+      from { opacity: 0; transform: translateY(24px) scale(0.92); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .secret-for {
+      margin: 0 0 18px;
+      color: var(--muted);
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .secret-word {
+      margin: 0;
+      font-size: clamp(2rem, 10vw, 4.2rem);
+      line-height: 1;
+      font-weight: 950;
+      overflow-wrap: anywhere;
+      text-shadow: 0 0 34px rgba(33, 230, 255, 0.34);
+    }
+
+    .secret-word.imposter {
+      color: var(--danger);
+      text-shadow: 0 0 42px rgba(255, 85, 120, 0.44);
+    }
+
+    .secret-topic {
+      display: inline-flex;
+      margin: 22px 0 24px;
+      padding: 9px 14px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--yellow);
+      font-weight: 900;
+    }
+
+    .discussion, .result {
+      width: min(780px, 100%);
+      margin: 0 auto;
+      padding: clamp(22px, 5vw, 38px);
+      text-align: center;
+    }
+
+    .big-title {
+      margin: 0;
+      font-size: clamp(2rem, 9vw, 4.5rem);
+      line-height: 0.98;
+      font-weight: 950;
+      text-transform: uppercase;
+    }
+
+    .big-copy {
+      margin: 18px auto 24px;
+      max-width: 620px;
+      color: var(--muted);
+      line-height: 1.55;
+      font-weight: 800;
+      font-size: 1.05rem;
+    }
+
+    .result.revealed {
+      animation: flashShake 520ms ease both;
+    }
+
+    @keyframes flashShake {
+      0% { filter: brightness(1); transform: translateX(0); }
+      18% { filter: brightness(1.7); transform: translateX(-8px); }
+      36% { transform: translateX(7px); }
+      54% { transform: translateX(-4px); }
+      72% { transform: translateX(3px); }
+      100% { filter: brightness(1); transform: translateX(0); }
+    }
+
+    .reveal-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin: 24px 0;
+      text-align: left;
+    }
+
+    .reveal-box {
+      padding: 16px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--line);
+      min-width: 0;
+    }
+
+    .reveal-label {
+      color: var(--muted);
+      font-weight: 900;
+      text-transform: uppercase;
+      font-size: 0.78rem;
+    }
+
+    .reveal-value {
+      margin-top: 8px;
+      font-size: clamp(1.15rem, 4vw, 1.7rem);
+      font-weight: 950;
+      overflow-wrap: anywhere;
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      z-index: 30;
+      display: none;
+      place-items: center;
+      padding: 18px;
+      background: rgba(2, 3, 9, 0.76);
+      backdrop-filter: blur(14px);
+    }
+
+    .modal.open {
+      display: grid;
+      animation: fadeIn 180ms ease both;
+    }
+
+    .guide {
+      width: min(620px, 100%);
+      padding: 24px;
+      border-radius: 24px;
+      background: var(--panel-strong);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+    }
+
+    .guide h2 {
+      margin: 0 0 14px;
+      font-size: 1.6rem;
+    }
+
+    .guide ol {
+      margin: 0 0 18px;
+      padding-left: 22px;
+      color: var(--muted);
+      font-weight: 750;
+      line-height: 1.55;
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 22px;
+      z-index: 40;
+      transform: translate(-50%, 20px);
+      opacity: 0;
+      pointer-events: none;
+      padding: 12px 16px;
+      border-radius: 999px;
+      background: rgba(18, 21, 43, 0.96);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      font-weight: 900;
+      transition: 180ms ease;
+      max-width: calc(100vw - 28px);
+      text-align: center;
+    }
+
+    .toast.show {
+      transform: translate(-50%, 0);
+      opacity: 1;
+    }
+
+    .footer-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    @media (max-width: 760px) {
+      .app {
+        padding-top: 16px;
+      }
+
+      .topbar {
+        align-items: flex-start;
+      }
+
+      .brand-sub {
+        display: none;
+      }
+
+      .hero, .form-grid, .topic-row, .actions, .footer-actions, .reveal-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .game-status {
+        grid-template-columns: 1fr;
+      }
+
+      .counter-ring {
+        width: 92px;
+        justify-self: center;
+      }
+
+      .player-list {
+        max-height: none;
+      }
+
+      .role-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .small-actions {
+        justify-content: flex-start;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 1ms !important;
+        scroll-behavior: auto !important;
+        transition-duration: 1ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="noise"></div>
+  <main class="app">
+    <header class="topbar">
+      <div class="brand" aria-label="Who Is Imposter">
+        <div class="mark">?</div>
+        <div>
+          <h1 class="brand-title">Who Is Imposter</h1>
+          <p class="brand-sub">Dành riêng cho anh em Thượng Cát nhé.</p>
+        </div>
+      </div>
+      <button class="icon-btn" id="guideBtn" type="button" title="Hướng dẫn chơi" aria-label="Hướng dẫn chơi">?</button>
+    </header>
+
+    <section id="setupScreen" class="screen active">
+      <div class="hero">
+        <div>
+          <div class="panel setup-card">
+            <h2 class="section-title">Cài đặt trận</h2>
+            <div class="form-grid">
+              <div class="field">
+                <label for="playerCount">Số người chơi</label>
+                <input id="playerCount" type="number" min="3" max="20" value="6" />
+              </div>
+              <div class="field">
+                <label for="imposterCount">Số kẻ mạo danh</label>
+                <input id="imposterCount" type="number" min="1" max="5" value="1" />
+              </div>
+            </div>
+            <div class="topic-row">
+              <div class="field">
+                <label for="topicMode">Chế độ chủ đề</label>
+                <select id="topicMode">
+                  <option value="random">Random hoàn toàn</option>
+                  <option value="manual">Chọn thủ công</option>
+                </select>
+              </div>
+              <div class="field" id="manualTopicField">
+                <label for="topicSelect">Chủ đề</label>
+                <select id="topicSelect"></select>
+              </div>
+            </div>
+            <div class="actions">
+              <button class="ghost-btn" id="randomNamesBtn" type="button">Random tên</button>
+              <button class="ghost-btn" id="shareRulesBtn" type="button">Copy luật chơi</button>
+            </div>
+            <div class="footer-actions">
+              <button class="primary-btn" id="startBtn" type="button">Bắt đầu game</button>
+              <button class="ghost-btn" id="quickStartBtn" type="button">Chơi nhanh</button>
+            </div>
+          </div>
+
+          <div class="panel tip-card">
+            <div class="tip-line"><span class="pill">1</span><span><b>Giữ bí mật.</b> Từng người tự bấm tên mình để xem vai, rồi ẩn lại trước khi đưa máy cho người kế tiếp.</span></div>
+            <div class="tip-line"><span class="pill">2</span><span><b>Thảo luận.</b> Người thường mô tả từ khóa khéo léo, imposter phải đoán và hòa nhập.</span></div>
+            <div class="tip-line"><span class="pill">3</span><span><b>Reveal.</b> Cả nhóm chốt nghi phạm rồi bấm hiển thị kết quả.</span></div>
+          </div>
+        </div>
+
+        <div class="panel players-card">
+          <div class="players-head">
+            <h2 class="section-title">Người chơi</h2>
+            <div class="small-actions">
+              <button class="ghost-btn" id="addPlayerBtn" type="button">Thêm</button>
+            </div>
+          </div>
+          <div class="player-list" id="playerInputs"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="rolesScreen" class="screen">
+      <div class="role-wrap">
+        <div class="panel game-status">
+          <div>
+            <p class="status-kicker">Xem vai bí mật</p>
+            <h2 class="status-title">Từng người bấm tên mình</h2>
+            <p class="status-copy">Sau khi xem, bấm “Ẩn lại”. Người khác không được nhìn màn hình.</p>
+          </div>
+          <div class="counter-ring" id="viewCounter" style="--progress: 0deg">0/0</div>
+        </div>
+        <div class="role-grid" id="roleButtons"></div>
+      </div>
+    </section>
+
+    <section id="discussionScreen" class="screen">
+      <div class="panel discussion">
+        <h2 class="big-title">Bắt đầu thảo luận</h2>
+        <p class="big-copy">Mọi người hãy đặt câu hỏi, mô tả vòng vo, phản biện và tìm ra ai là Imposter trước khi lộ quá nhiều gợi ý.</p>
+        <button class="danger-btn" id="showResultBtn" type="button">Hiển thị kẻ mạo danh</button>
+      </div>
+    </section>
+
+    <section id="resultScreen" class="screen">
+      <div class="panel result" id="resultCard">
+        <h2 class="big-title">Lộ diện!</h2>
+        <p class="big-copy">Kết quả trận này đã được mở. Chuẩn bị cãi nhau vui vẻ.</p>
+        <div class="reveal-grid">
+          <div class="reveal-box">
+            <div class="reveal-label">Kẻ mạo danh</div>
+            <div class="reveal-value" id="resultImposters"></div>
+          </div>
+          <div class="reveal-box">
+            <div class="reveal-label">Từ khóa thật</div>
+            <div class="reveal-value" id="resultWord"></div>
+          </div>
+          <div class="reveal-box">
+            <div class="reveal-label">Chủ đề</div>
+            <div class="reveal-value" id="resultTopic"></div>
+          </div>
+        </div>
+        <div class="footer-actions">
+          <button class="primary-btn" id="playAgainBtn" type="button">Chơi lại</button>
+          <button class="ghost-btn" id="backSetupBtn" type="button">Sửa người chơi</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="role-modal" id="roleModal" aria-modal="true" role="dialog">
+    <div class="secret-card">
+      <p class="secret-for" id="secretFor"></p>
+      <h2 class="secret-word" id="secretWord"></h2>
+      <div class="secret-topic" id="secretTopic"></div>
+      <button class="primary-btn" id="hideRoleBtn" type="button">Ẩn lại</button>
+    </div>
+  </div>
+
+  <div class="modal" id="guideModal" aria-modal="true" role="dialog">
+    <div class="guide">
+      <h2>Hướng dẫn chơi</h2>
+      <ol>
+        <li>Nhập tên người chơi, chọn số Imposter và chủ đề.</li>
+        <li>Bắt đầu game, từng người tự bấm tên mình để xem vai.</li>
+        <li>Người thường thấy từ khóa bí mật. Imposter chỉ biết mình là kẻ mạo danh.</li>
+        <li>Sau khi tất cả đã xem, cả nhóm thảo luận và vote nghi phạm.</li>
+        <li>Bấm hiển thị kết quả để xem Imposter, từ khóa và chủ đề.</li>
+      </ol>
+      <button class="primary-btn" id="closeGuideBtn" type="button">Đã hiểu</button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    const TOPICS = {
+      "Tết": ["bánh chưng", "lì xì", "hoa mai", "hoa đào", "mâm ngũ quả", "giao thừa", "pháo hoa", "dưa hành", "chúc Tết", "xông đất", "áo dài", "đường hoa Nguyễn Huệ", "cúng ông Công ông Táo", "mứt dừa", "vé xe Tết", "dọn nhà"],
+      "Trung thu": ["bánh nướng", "bánh dẻo", "đèn ông sao", "múa lân", "chị Hằng", "chú Cuội", "rước đèn", "mâm cỗ", "trà nóng", "lồng đèn cá chép", "trống lân", "phá cỗ", "mặt trăng", "kẹo kéo"],
+      "Giáng sinh": ["cây thông", "ông già Noel", "tuần lộc", "hang đá", "quà Noel", "đèn nhấp nháy", "nhạc Jingle Bells", "tất treo", "người tuyết", "thiệp Giáng sinh", "bữa tiệc Noel", "chuông nhà thờ"],
+      "Đồ ăn Việt Nam": ["phở bò", "bún chả", "bánh mì", "cơm tấm", "gỏi cuốn", "bún bò Huế", "mì Quảng", "bánh xèo", "cháo lòng", "bún đậu mắm tôm", "nem nướng", "hủ tiếu", "bánh cuốn", "xôi mặn", "bún riêu", "chè ba màu"],
+      "Đường phố Việt Nam": ["kẹt xe", "xe máy", "đèn đỏ", "quán cóc", "vỉa hè", "shipper", "tiếng còi", "ổ gà", "chợ sáng", "xe bán bánh mì", "trà đá", "mưa ngập", "áo mưa", "bãi giữ xe", "loa phường"],
+      "Trà sữa": ["trân châu đen", "kem cheese", "đường đen", "matcha", "oolong", "pudding trứng", "thạch phô mai", "size L", "ít đá", "30% đường", "sữa tươi trân châu", "hồng trà", "topping", "ống hút to"],
+      "Trường học": ["bảng đen", "phấn trắng", "sổ đầu bài", "kiểm tra 15 phút", "chào cờ", "đồng phục", "căn tin", "giám thị", "bài tập về nhà", "họp phụ huynh", "bàn cuối", "trống trường", "học thêm", "thi học kỳ"],
+      "Phương tiện giao thông": ["xe máy", "ô tô", "xe buýt", "tàu hỏa", "máy bay", "xe đạp", "xích lô", "tàu điện metro", "phà", "xe khách", "taxi công nghệ", "xe tải", "thuyền", "xe điện"],
+      "Môn thể thao": ["bóng đá", "cầu lông", "bóng rổ", "bơi lội", "bóng chuyền", "đá cầu", "chạy bộ", "tennis", "pickleball", "boxing", "cờ vua", "bóng bàn", "võ thuật", "đạp xe"],
+      "Địa điểm du lịch": ["Đà Lạt", "Phú Quốc", "Hội An", "Sa Pa", "Hạ Long", "Nha Trang", "Huế", "Đà Nẵng", "Mũi Né", "Côn Đảo", "Hà Giang", "Ninh Bình", "Cần Thơ", "Vũng Tàu"],
+      "Người nổi tiếng Việt Nam": ["Sơn Tùng M-TP", "Mỹ Tâm", "Trấn Thành", "Hoài Linh", "Đen Vâu", "Hòa Minzy", "Suboi", "Noo Phước Thịnh", "H'Hen Niê", "Đông Nhi", "Bích Phương", "Isaac", "MONO", "Chi Pu"],
+      "Ca sĩ": ["micro", "concert", "fan meeting", "autotune", "vũ đạo", "MV", "album", "ballad", "rap verse", "high note", "sân khấu", "lightstick", "phòng thu", "nhạc sĩ"],
+      "Đồ vật hằng ngày": ["điện thoại", "chìa khóa", "ví tiền", "tai nghe", "bình nước", "bàn chải", "sạc dự phòng", "áo khoác", "kính mát", "nồi cơm điện", "remote", "quạt máy", "laptop", "khẩu trang"],
+      "Meme Việt Nam": ["chị Google", "ông chú Viettel", "khum", "ét o ét", "u là trời", "mãi keo", "đỉnh nóc kịch trần", "còn cái nịt", "xin vía", "flex", "rén ngang", "bất ổn", "kiwi kiwi", "trầm cảm một chút"],
+      "Động vật": ["mèo", "chó", "gà", "vịt", "trâu", "bò", "cá vàng", "chim sáo", "thỏ", "rùa", "khỉ", "voi", "hổ", "cá heo", "chim cánh cụt", "hamster"],
+      "Nghề nghiệp": ["bác sĩ", "giáo viên", "lập trình viên", "shipper", "đầu bếp", "ca sĩ", "diễn viên", "công an", "phi công", "nông dân", "thiết kế", "thợ cắt tóc", "barista", "hướng dẫn viên"],
+      "Mạng xã hội": ["Facebook", "TikTok", "Instagram", "YouTube", "Zalo", "story", "livestream", "hashtag", "comment dạo", "inbox", "filter", "reels", "viral", "follow", "block", "reaction"],
+      "Game nổi tiếng": ["Liên Quân", "Free Fire", "PUBG", "Minecraft", "Among Us", "Roblox", "FIFA Online", "Valorant", "Genshin Impact", "Tốc Chiến", "Audition", "Play Together", "Candy Crush", "Đấu Trường Chân Lý"],
+      "TikTok trend": ["biến hình", "nhảy bắt trend", "review đồ ăn", "GRWM", "capcut template", "duet", "stitch", "sound viral", "NPC livestream", "makeup transition", "story time", "unbox", "trend ảnh thẻ", "điệu nhảy tay"],
+      "Quán ăn vỉa hè": ["ốc luộc", "bánh tráng trộn", "gỏi khô bò", "hủ tiếu gõ", "xôi bắp", "cá viên chiên", "bột chiên", "bánh canh", "cháo sườn", "nem chua rán", "trứng vịt lộn", "chè thái", "nước mía", "bánh cuốn nóng"]
+    };
+
+    const DEFAULT_NAMES = ["Minh", "Linh", "An", "Vy", "Nam", "Hà", "Phúc", "Trang", "Khoa", "Nhi", "Quân", "Mai", "Duy", "Huyền", "Tuấn", "Thảo", "Long", "Ngọc", "Bảo", "Khánh"];
+    const RULES_TEXT = "Who Is Imposter: Mỗi người lần lượt xem vai bí mật. Người thường thấy cùng một từ khóa, Imposter không biết từ khóa. Sau đó cả nhóm thảo luận và vote ai là Imposter. Cuối cùng bấm reveal để xem Imposter, chủ đề và từ khóa thật.";
+
+    const $ = (selector) => document.querySelector(selector);
+    const els = {
+      setupScreen: $("#setupScreen"),
+      rolesScreen: $("#rolesScreen"),
+      discussionScreen: $("#discussionScreen"),
+      resultScreen: $("#resultScreen"),
+      playerCount: $("#playerCount"),
+      imposterCount: $("#imposterCount"),
+      topicMode: $("#topicMode"),
+      topicSelect: $("#topicSelect"),
+      manualTopicField: $("#manualTopicField"),
+      playerInputs: $("#playerInputs"),
+      roleButtons: $("#roleButtons"),
+      viewCounter: $("#viewCounter"),
+      roleModal: $("#roleModal"),
+      secretFor: $("#secretFor"),
+      secretWord: $("#secretWord"),
+      secretTopic: $("#secretTopic"),
+      hideRoleBtn: $("#hideRoleBtn"),
+      resultCard: $("#resultCard"),
+      resultImposters: $("#resultImposters"),
+      resultWord: $("#resultWord"),
+      resultTopic: $("#resultTopic"),
+      guideModal: $("#guideModal"),
+      toast: $("#toast")
+    };
+
+    let players = ["", "", "", "", "", ""];
+    let game = null;
+    let activeRoleIndex = null;
+    let audioCtx = null;
+
+    function clamp(value, min, max) {
+      return Math.max(min, Math.min(max, Number(value) || min));
+    }
+
+    function pick(array) {
+      return array[Math.floor(Math.random() * array.length)];
+    }
+
+    function shuffle(array) {
+      const clone = [...array];
+      for (let i = clone.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [clone[i], clone[j]] = [clone[j], clone[i]];
+      }
+      return clone;
+    }
+
+    function beep(type) {
+      try {
+        audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+        const now = audioCtx.currentTime;
+        const gain = audioCtx.createGain();
+        gain.connect(audioCtx.destination);
+        gain.gain.setValueAtTime(0.0001, now);
+        gain.gain.exponentialRampToValueAtTime(0.18, now + 0.015);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.28);
+
+        const playTone = (freq, start, duration, wave = "sine") => {
+          const osc = audioCtx.createOscillator();
+          osc.type = wave;
+          osc.frequency.setValueAtTime(freq, now + start);
+          osc.connect(gain);
+          osc.start(now + start);
+          osc.stop(now + start + duration);
+        };
+
+        if (type === "start") {
+          playTone(330, 0, 0.12, "triangle");
+          playTone(495, 0.1, 0.12, "triangle");
+          playTone(660, 0.2, 0.16, "triangle");
+        } else if (type === "reveal") {
+          playTone(130, 0, 0.2, "sawtooth");
+          playTone(196, 0.08, 0.22, "sawtooth");
+          playTone(392, 0.18, 0.26, "square");
+        } else {
+          playTone(740, 0, 0.09, "sine");
+          playTone(980, 0.08, 0.12, "sine");
+        }
+      } catch (error) {
+        /* Audio is optional and may be blocked by the browser. */
+      }
+    }
+
+    function showToast(message) {
+      els.toast.textContent = message;
+      els.toast.classList.add("show");
+      window.clearTimeout(showToast.timer);
+      showToast.timer = window.setTimeout(() => els.toast.classList.remove("show"), 1900);
+    }
+
+    function showScreen(screen) {
+      [els.setupScreen, els.rolesScreen, els.discussionScreen, els.resultScreen].forEach((el) => el.classList.remove("active"));
+      screen.classList.add("active");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function syncCounts() {
+      const count = clamp(els.playerCount.value, 3, 20);
+      els.playerCount.value = count;
+      while (players.length < count) players.push("");
+      while (players.length > count) players.pop();
+
+      const maxImposters = Math.max(1, count - 1);
+      els.imposterCount.max = maxImposters;
+      els.imposterCount.value = clamp(els.imposterCount.value, 1, maxImposters);
+      renderPlayerInputs();
+    }
+
+    function renderTopics() {
+      els.topicSelect.innerHTML = Object.keys(TOPICS)
+        .map((topic) => `<option value="${topic}">${topic}</option>`)
+        .join("");
+      toggleTopicMode();
+    }
+
+    function toggleTopicMode() {
+      els.manualTopicField.classList.toggle("hidden", els.topicMode.value === "random");
+    }
+
+    function renderPlayerInputs() {
+      els.playerInputs.innerHTML = players.map((name, index) => `
+        <div class="player-row">
+          <input value="${escapeHtml(name)}" data-player-index="${index}" placeholder="Người chơi ${index + 1}" aria-label="Tên người chơi ${index + 1}" />
+          <button class="icon-btn" type="button" data-remove-index="${index}" title="Xóa người chơi" aria-label="Xóa người chơi ${index + 1}">×</button>
+        </div>
+      `).join("");
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;");
+    }
+
+    function collectPlayers(fillMissing = true) {
+      const inputs = [...els.playerInputs.querySelectorAll("input")];
+      players = inputs.map((input, index) => {
+        const value = input.value.trim();
+        return value || (fillMissing ? DEFAULT_NAMES[index % DEFAULT_NAMES.length] : "");
+      });
+      renderPlayerInputs();
+      return players;
+    }
+
+    function randomizeNames() {
+      players = shuffle(DEFAULT_NAMES).slice(0, players.length);
+      renderPlayerInputs();
+      showToast("Đã random tên người chơi");
+    }
+
+    function addPlayer() {
+      if (players.length >= 20) return showToast("Tối đa 20 người chơi");
+      players.push("");
+      els.playerCount.value = players.length;
+      syncCounts();
+    }
+
+    function removePlayer(index) {
+      if (players.length <= 3) return showToast("Cần ít nhất 3 người chơi");
+      players.splice(index, 1);
+      els.playerCount.value = players.length;
+      syncCounts();
+    }
+
+    function startGame(quick = false) {
+      if (quick) randomizeNames();
+      const finalPlayers = collectPlayers(true);
+      const imposterCount = clamp(els.imposterCount.value, 1, finalPlayers.length - 1);
+      const topics = Object.keys(TOPICS);
+      const topic = els.topicMode.value === "manual" ? els.topicSelect.value : pick(topics);
+      const word = pick(TOPICS[topic]);
+      const imposterIndexes = shuffle(finalPlayers.map((_, index) => index)).slice(0, imposterCount);
+
+      game = {
+        players: finalPlayers,
+        topic,
+        word,
+        imposterIndexes,
+        seen: new Set()
+      };
+
+      activeRoleIndex = null;
+      renderRoleButtons();
+      updateProgress();
+      beep("start");
+      showScreen(els.rolesScreen);
+    }
+
+    function renderRoleButtons() {
+      els.roleButtons.innerHTML = game.players.map((name, index) => {
+        const seen = game.seen.has(index);
+        return `
+          <button class="role-player ${seen ? "seen" : ""}" type="button" data-role-index="${index}" ${seen ? "disabled" : ""}>
+            <span class="role-name">${escapeHtml(name)}</span>
+            <span class="role-state">${seen ? "Đã xem vai" : "Bấm để xem"}</span>
+          </button>
+        `;
+      }).join("");
+    }
+
+    function updateProgress() {
+      const seen = game ? game.seen.size : 0;
+      const total = game ? game.players.length : 0;
+      const deg = total ? Math.round((seen / total) * 360) : 0;
+      els.viewCounter.textContent = `${seen}/${total}`;
+      els.viewCounter.style.setProperty("--progress", `${deg}deg`);
+    }
+
+    function openRole(index) {
+      if (activeRoleIndex !== null) return;
+      activeRoleIndex = index;
+      const isImposter = game.imposterIndexes.includes(index);
+      els.secretFor.textContent = `Vai của ${game.players[index]}`;
+      els.secretWord.textContent = isImposter ? "Bạn là KẺ MẠO DANH" : game.word;
+      els.secretWord.classList.toggle("imposter", isImposter);
+      els.secretTopic.textContent = isImposter ? "Hãy bình tĩnh và đoán từ khóa" : `Chủ đề: ${game.topic}`;
+      els.roleModal.classList.add("open");
+      document.body.style.overflow = "hidden";
+      beep("role");
+    }
+
+    function hideRole() {
+      if (activeRoleIndex === null) return;
+      game.seen.add(activeRoleIndex);
+      activeRoleIndex = null;
+      els.roleModal.classList.remove("open");
+      document.body.style.overflow = "";
+      renderRoleButtons();
+      updateProgress();
+      if (game.seen.size === game.players.length) {
+        window.setTimeout(() => showScreen(els.discussionScreen), 360);
+      }
+    }
+
+    function revealResult() {
+      els.resultImposters.textContent = game.imposterIndexes.map((index) => game.players[index]).join(", ");
+      els.resultWord.textContent = game.word;
+      els.resultTopic.textContent = game.topic;
+      showScreen(els.resultScreen);
+      els.resultCard.classList.remove("revealed");
+      void els.resultCard.offsetWidth;
+      els.resultCard.classList.add("revealed");
+      beep("reveal");
+      if (navigator.vibrate) navigator.vibrate([90, 50, 120]);
+    }
+
+    async function copyRules() {
+      try {
+        await navigator.clipboard.writeText(RULES_TEXT);
+        showToast("Đã copy luật chơi");
+      } catch (error) {
+        const temp = document.createElement("textarea");
+        temp.value = RULES_TEXT;
+        document.body.appendChild(temp);
+        temp.select();
+        document.execCommand("copy");
+        temp.remove();
+        showToast("Đã copy luật chơi");
+      }
+    }
+
+    function openGuide() {
+      els.guideModal.classList.add("open");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeGuide() {
+      els.guideModal.classList.remove("open");
+      if (!els.roleModal.classList.contains("open")) document.body.style.overflow = "";
+    }
+
+    $("#playerCount").addEventListener("change", syncCounts);
+    $("#imposterCount").addEventListener("change", syncCounts);
+    $("#topicMode").addEventListener("change", toggleTopicMode);
+    $("#randomNamesBtn").addEventListener("click", randomizeNames);
+    $("#addPlayerBtn").addEventListener("click", addPlayer);
+    $("#startBtn").addEventListener("click", () => startGame(false));
+    $("#quickStartBtn").addEventListener("click", () => startGame(true));
+    $("#shareRulesBtn").addEventListener("click", copyRules);
+    $("#hideRoleBtn").addEventListener("click", hideRole);
+    $("#showResultBtn").addEventListener("click", revealResult);
+    $("#playAgainBtn").addEventListener("click", () => startGame(false));
+    $("#backSetupBtn").addEventListener("click", () => showScreen(els.setupScreen));
+    $("#guideBtn").addEventListener("click", openGuide);
+    $("#closeGuideBtn").addEventListener("click", closeGuide);
+
+    els.playerInputs.addEventListener("input", (event) => {
+      const index = event.target.dataset.playerIndex;
+      if (index !== undefined) players[Number(index)] = event.target.value;
+    });
+
+    els.playerInputs.addEventListener("click", (event) => {
+      const index = event.target.dataset.removeIndex;
+      if (index !== undefined) removePlayer(Number(index));
+    });
+
+    els.roleButtons.addEventListener("click", (event) => {
+      const button = event.target.closest("[data-role-index]");
+      if (!button) return;
+      openRole(Number(button.dataset.roleIndex));
+    });
+
+    els.guideModal.addEventListener("click", (event) => {
+      if (event.target === els.guideModal) closeGuide();
+    });
+
+    window.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        if (els.guideModal.classList.contains("open")) closeGuide();
+      }
+    });
+
+    renderTopics();
+    syncCounts();
+  </script>
+</body>
+</html>
