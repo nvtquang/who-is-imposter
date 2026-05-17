@@ -871,26 +871,333 @@
 
   <script>
     const TOPICS = {
-      "Tết": ["bánh chưng", "lì xì", "hoa mai", "hoa đào", "mâm ngũ quả", "giao thừa", "pháo hoa", "dưa hành", "chúc Tết", "xông đất", "áo dài", "đường hoa Nguyễn Huệ", "cúng ông Công ông Táo", "mứt dừa", "vé xe Tết", "dọn nhà"],
-      "Trung thu": ["bánh nướng", "bánh dẻo", "đèn ông sao", "múa lân", "chị Hằng", "chú Cuội", "rước đèn", "mâm cỗ", "trà nóng", "lồng đèn cá chép", "trống lân", "phá cỗ", "mặt trăng", "kẹo kéo"],
-      "Giáng sinh": ["cây thông", "ông già Noel", "tuần lộc", "hang đá", "quà Noel", "đèn nhấp nháy", "nhạc Jingle Bells", "tất treo", "người tuyết", "thiệp Giáng sinh", "bữa tiệc Noel", "chuông nhà thờ"],
-      "Đồ ăn Việt Nam": ["phở bò", "bún chả", "bánh mì", "cơm tấm", "gỏi cuốn", "bún bò Huế", "mì Quảng", "bánh xèo", "cháo lòng", "bún đậu mắm tôm", "nem nướng", "hủ tiếu", "bánh cuốn", "xôi mặn", "bún riêu", "chè ba màu"],
-      "Đường phố Việt Nam": ["kẹt xe", "xe máy", "đèn đỏ", "quán cóc", "vỉa hè", "shipper", "tiếng còi", "ổ gà", "chợ sáng", "xe bán bánh mì", "trà đá", "mưa ngập", "áo mưa", "bãi giữ xe", "loa phường"],
-      "Trà sữa": ["trân châu đen", "kem cheese", "đường đen", "matcha", "oolong", "pudding trứng", "thạch phô mai", "size L", "ít đá", "30% đường", "sữa tươi trân châu", "hồng trà", "topping", "ống hút to"],
-      "Trường học": ["bảng đen", "phấn trắng", "sổ đầu bài", "kiểm tra 15 phút", "chào cờ", "đồng phục", "căn tin", "giám thị", "bài tập về nhà", "họp phụ huynh", "bàn cuối", "trống trường", "học thêm", "thi học kỳ"],
-      "Phương tiện giao thông": ["xe máy", "ô tô", "xe buýt", "tàu hỏa", "máy bay", "xe đạp", "xích lô", "tàu điện metro", "phà", "xe khách", "taxi công nghệ", "xe tải", "thuyền", "xe điện"],
-      "Môn thể thao": ["bóng đá", "cầu lông", "bóng rổ", "bơi lội", "bóng chuyền", "đá cầu", "chạy bộ", "tennis", "pickleball", "boxing", "cờ vua", "bóng bàn", "võ thuật", "đạp xe"],
-      "Địa điểm du lịch": ["Đà Lạt", "Phú Quốc", "Hội An", "Sa Pa", "Hạ Long", "Nha Trang", "Huế", "Đà Nẵng", "Mũi Né", "Côn Đảo", "Hà Giang", "Ninh Bình", "Cần Thơ", "Vũng Tàu"],
-      "Người nổi tiếng Việt Nam": ["Sơn Tùng M-TP", "Mỹ Tâm", "Trấn Thành", "Hoài Linh", "Đen Vâu", "Hòa Minzy", "Suboi", "Noo Phước Thịnh", "H'Hen Niê", "Đông Nhi", "Bích Phương", "Isaac", "MONO", "Chi Pu"],
-      "Ca sĩ": ["micro", "concert", "fan meeting", "autotune", "vũ đạo", "MV", "album", "ballad", "rap verse", "high note", "sân khấu", "lightstick", "phòng thu", "nhạc sĩ"],
-      "Đồ vật hằng ngày": ["điện thoại", "chìa khóa", "ví tiền", "tai nghe", "bình nước", "bàn chải", "sạc dự phòng", "áo khoác", "kính mát", "nồi cơm điện", "remote", "quạt máy", "laptop", "khẩu trang"],
-      "Meme Việt Nam": ["chị Google", "ông chú Viettel", "khum", "ét o ét", "u là trời", "mãi keo", "đỉnh nóc kịch trần", "còn cái nịt", "xin vía", "flex", "rén ngang", "bất ổn", "kiwi kiwi", "trầm cảm một chút"],
-      "Động vật": ["mèo", "chó", "gà", "vịt", "trâu", "bò", "cá vàng", "chim sáo", "thỏ", "rùa", "khỉ", "voi", "hổ", "cá heo", "chim cánh cụt", "hamster"],
-      "Nghề nghiệp": ["bác sĩ", "giáo viên", "lập trình viên", "shipper", "đầu bếp", "ca sĩ", "diễn viên", "công an", "phi công", "nông dân", "thiết kế", "thợ cắt tóc", "barista", "hướng dẫn viên"],
-      "Mạng xã hội": ["Facebook", "TikTok", "Instagram", "YouTube", "Zalo", "story", "livestream", "hashtag", "comment dạo", "inbox", "filter", "reels", "viral", "follow", "block", "reaction"],
-      "Game nổi tiếng": ["Liên Quân", "Free Fire", "PUBG", "Minecraft", "Among Us", "Roblox", "FIFA Online", "Valorant", "Genshin Impact", "Tốc Chiến", "Audition", "Play Together", "Candy Crush", "Đấu Trường Chân Lý"],
-      "TikTok trend": ["biến hình", "nhảy bắt trend", "review đồ ăn", "GRWM", "capcut template", "duet", "stitch", "sound viral", "NPC livestream", "makeup transition", "story time", "unbox", "trend ảnh thẻ", "điệu nhảy tay"],
-      "Quán ăn vỉa hè": ["ốc luộc", "bánh tráng trộn", "gỏi khô bò", "hủ tiếu gõ", "xôi bắp", "cá viên chiên", "bột chiên", "bánh canh", "cháo sườn", "nem chua rán", "trứng vịt lộn", "chè thái", "nước mía", "bánh cuốn nóng"]
+      "Tết": [
+    "bánh chưng", "bánh tét", "lì xì", "bao lì xì", "hoa mai", "hoa đào",
+    "mâm ngũ quả", "giao thừa", "pháo hoa", "dưa hành", "củ kiệu",
+    "chúc Tết", "xông đất", "áo dài", "đường hoa Nguyễn Huệ",
+    "cúng ông Công ông Táo", "cá chép", "mứt dừa", "mứt gừng",
+    "mứt bí", "hạt dưa", "hạt bí", "vé xe Tết", "dọn nhà",
+    "tổng vệ sinh", "đi chùa đầu năm", "hái lộc", "câu đối đỏ",
+    "bánh mứt", "giỏ quà Tết", "lịch Tết", "sum họp gia đình",
+    "thịt kho trứng", "canh khổ qua", "chợ Tết", "nhạc Xuân",
+    "Táo Quân", "cúng tất niên", "cúng mùng Một", "du xuân",
+    "khai bút đầu năm", "mừng tuổi", "đốt pháo", "nghỉ Tết",
+    "Tết đoàn viên"
+  ],
+
+  "Trung thu": [
+    "bánh nướng", "bánh dẻo", "bánh trung thu thập cẩm",
+    "bánh trung thu trứng muối", "bánh trung thu đậu xanh",
+    "đèn ông sao", "đèn kéo quân", "đèn lồng giấy", "lồng đèn cá chép",
+    "múa lân", "đội lân", "trống lân", "ông địa", "chị Hằng",
+    "chú Cuội", "cây đa", "rước đèn", "phá cỗ", "mâm cỗ",
+    "mâm ngũ quả Trung thu", "trà nóng", "mặt trăng", "trăng rằm",
+    "kẹo kéo", "kẹo bông gòn", "đầu lân", "đèn pin", "bánh pía",
+    "thiếu nhi", "đêm hội trăng rằm", "lân sư rồng", "tiếng trống",
+    "mặt nạ giấy", "đèn lồng Hội An", "sư tử múa lân", "rằm tháng Tám",
+    "sân trường Trung thu", "quà Trung thu", "hộp bánh trung thu",
+    "trăng sáng"
+  ],
+
+  "Giáng sinh": [
+    "cây thông", "ông già Noel", "tuần lộc", "hang đá", "quà Noel",
+    "đèn nhấp nháy", "nhạc Jingle Bells", "tất treo", "người tuyết",
+    "thiệp Giáng sinh", "bữa tiệc Noel", "chuông nhà thờ",
+    "vòng nguyệt quế", "mũ Noel", "áo len đỏ", "kẹo gậy",
+    "bánh khúc cây", "lò sưởi", "xe trượt tuyết", "bông tuyết",
+    "đêm Noel", "thánh ca", "hang đá Đức Mẹ", "nhà thờ lớn",
+    "cây thông mini", "quả châu", "dây kim tuyến", "hộp quà",
+    "ông già Noel phát quà", "lời chúc Noel", "giáng sinh an lành",
+    "đêm an lành", "bữa tối Giáng sinh", "đèn trang trí", "ngôi sao Noel",
+    "tuần lộc Rudolph", "áo khoác đỏ", "chợ Giáng sinh", "cây thông giả",
+    "ông già Noel cưỡi xe"
+  ],
+
+  "Đồ ăn Việt Nam": [
+    "phở bò", "phở gà", "bún chả", "bánh mì", "bánh mì pate",
+    "cơm tấm", "cơm tấm sườn bì chả", "gỏi cuốn", "bún bò Huế",
+    "mì Quảng", "bánh xèo", "cháo lòng", "bún đậu mắm tôm",
+    "nem nướng", "hủ tiếu", "hủ tiếu gõ", "bánh cuốn", "bánh cuốn nóng",
+    "xôi mặn", "xôi bắp", "bún riêu", "bún mắm", "bún thịt nướng",
+    "chè ba màu", "chè thái", "ốc luộc", "ốc xào me", "bánh tráng trộn",
+    "bánh tráng nướng", "gỏi khô bò", "cá viên chiên", "bột chiên",
+    "bánh canh", "cháo sườn", "nem chua rán", "trứng vịt lộn",
+    "nước mía", "trà đá", "sữa đậu nành", "bò lá lốt", "bánh bèo",
+    "bánh khọt", "cao lầu", "cơm gà Hội An", "lẩu mắm", "lẩu thái",
+    "bún cá", "bánh giò", "chả giò", "nem rán", "bánh bao",
+    "bánh tiêu", "tàu hủ nóng", "gà nướng", "cơm rang dưa bò"
+  ],
+
+  "Đường phố Việt Nam": [
+    "kẹt xe", "xe máy", "đèn đỏ", "đèn xanh", "quán cóc", "vỉa hè",
+    "shipper", "tiếng còi", "ổ gà", "chợ sáng", "xe bán bánh mì",
+    "trà đá", "mưa ngập", "áo mưa", "bãi giữ xe", "loa phường",
+    "xe ôm công nghệ", "gánh hàng rong", "bán hàng rong", "cột điện",
+    "dây điện chằng chịt", "ngã tư", "vòng xoay", "đường một chiều",
+    "công an giao thông", "kẹt xe giờ cao điểm", "xe buýt", "taxi",
+    "quán nước vỉa hè", "cà phê bệt", "xe đẩy", "biển quảng cáo",
+    "chợ cóc", "tiệm tạp hóa", "tiếng rao", "nón bảo hiểm",
+    "đèn đường", "gờ giảm tốc", "vạch kẻ đường", "đèn xi nhan",
+    "bến xe buýt", "cầu vượt", "hầm chui", "đường ngập nước", "đường cấm", 
+    "đường hẹp", "đường cao tốc", "đường làng", "đường quê", "đường phố cổ", "đường đôi", 
+    "đường một chiều", "đường hai chiều", "đường vòng", "đường thẳng", "đường dốc"
+  ],
+
+
+  "Trường học": [
+    "bảng đen", "bảng trắng", "phấn trắng", "bút lông bảng", "sổ đầu bài",
+    "kiểm tra 15 phút", "kiểm tra một tiết", "chào cờ", "đồng phục",
+    "căn tin", "giám thị", "bài tập về nhà", "họp phụ huynh", "bàn cuối",
+    "trống trường", "học thêm", "thi học kỳ", "giấy kiểm tra",
+    "sách giáo khoa", "vở ghi", "bút bi", "bút chì", "thước kẻ",
+    "cặp sách", "balo", "lớp trưởng", "sao đỏ", "thầy cô",
+    "cô chủ nhiệm", "bảng điểm", "sổ liên lạc", "ra chơi", "xếp hàng",
+    "sân trường", "ghế đá", "nhà xe học sinh", "đề cương ôn tập",
+    "thi tốt nghiệp", "bài kiểm tra miệng", "học sinh cá biệt",
+    "bàn giáo viên", "máy chiếu", "tiết thể dục", "phòng thí nghiệm"
+  ],
+
+  "Phương tiện giao thông": [
+    "xe máy", "xe tay ga", "xe số", "ô tô", "xe buýt", "tàu hỏa",
+    "máy bay", "xe đạp", "xe đạp điện", "xe máy điện", "xích lô",
+    "tàu điện metro", "phà", "xe khách", "taxi công nghệ", "taxi truyền thống",
+    "xe tải", "thuyền", "cano", "tàu cao tốc", "xe điện", "xe limousine",
+    "xe container", "xe cứu thương", "xe cứu hỏa", "xe cảnh sát",
+    "tàu thủy", "tàu ngầm", "trực thăng", "khinh khí cầu", "ván trượt",
+    "xe ba gác", "xe kéo", "xe bán tải", "xe thể thao", "xe đua",
+    "xe bus hai tầng", "tàu điện trên cao", "xe jeep", "xe mui trần",
+    "xe đầu kéo", "xe ben", "xe rác", "xe trộn bê tông", "xe cần cẩu",
+    "xe nâng", "xe lu", "xe ủi", "xe xúc",
+    "Xanh SM", "Grab", "Be", "ShoppeeFood"
+  ],
+
+  "Môn thể thao": [
+    "bóng đá", "cầu lông", "bóng rổ", "bơi lội", "bóng chuyền",
+    "bóng chuyền hơi", "đá cầu", "chạy bộ", "tennis", "pickleball",
+    "boxing", "cờ vua", "cờ tướng", "bóng bàn", "võ thuật", "karate",
+    "taekwondo", "judo", "vovinam", "đạp xe", "gym", "yoga",
+    "leo núi", "trượt ván", "trượt patin", "bắn cung", "golf",
+    "đấu kiếm", "bóng ném", "cử tạ", "điền kinh", "marathon",
+    "lướt sóng", "thể dục dụng cụ", "đua xe", "bóng chày",
+    "khúc côn cầu", "đua thuyền", "nhảy xa", "nhảy cao",
+    "bóng bầu dục", "bóng nước", "bóng đá bãi biển", "bóng đá trong nhà",
+    "bóng đá nữ", "bóng đá nam", "cầu mây"
+  ],
+
+  "Địa điểm du lịch": [
+    "Đà Lạt", "Phú Quốc", "Hội An", "Sa Pa", "Hạ Long", "Nha Trang",
+    "Huế", "Đà Nẵng", "Mũi Né", "Côn Đảo", "Hà Giang", "Ninh Bình",
+    "Cần Thơ", "Vũng Tàu", "Tam Đảo", "Mộc Châu", "Mai Châu",
+    "Quy Nhơn", "Phú Yên", "Lý Sơn", "Cát Bà", "Bà Nà Hills",
+    "Fansipan", "Tràng An", "Tam Cốc", "Phong Nha", "Động Thiên Đường",
+    "Cù Lao Chàm", "Hồ Gươm", "Phố cổ Hà Nội", "Chợ Bến Thành",
+    "Miền Tây", "Rừng tràm Trà Sư", "Thác Bản Giốc", "Hồ Ba Bể",
+    "Đảo Bình Ba", "Đảo Nam Du", "Bình Hưng", "Bình Lập", "Pù Luông",
+    "Tà Xùa", "Y Tý", "Cao Bằng", "Buôn Ma Thuột"
+  ],
+
+  "Người nổi tiếng Việt Nam": [
+    "Sơn Tùng M-TP", "Mỹ Tâm", "Trấn Thành", "Hoài Linh", "Đen Vâu",
+    "Hòa Minzy", "Suboi", "Noo Phước Thịnh", "H'Hen Niê", "Đông Nhi",
+    "Bích Phương", "Isaac", "MONO", "Chi Pu", "HIEUTHUHAI",
+    "Erik", "Đức Phúc", "Min", "Amee", "Tóc Tiên", "Hồ Ngọc Hà",
+    "Miu Lê", "Karik", "Binz", "Wowy", "JustaTee", "Rhymastic",
+    "Lê Dương Bảo Lâm", "Ninh Dương Lan Ngọc", "Diệu Nhi", "Hari Won",
+    "Trường Giang", "Quang Trung", "BB Trần", "Jun Phạm", "Ngô Kiến Huy",
+    "Vũ Cát Tường", "Phương Mỹ Chi", "Mỹ Linh", "Hà Anh Tuấn",
+    "Soobin", "Rhyder", "Quang Hùng MasterD", "Orange", "MCK", "Wxrdie", "Tlinh"
+  ],
+
+  "Âm nhạc": [
+    "micro", "concert", "fan meeting", "autotune", "vũ đạo", "MV",
+    "album", "single", "ballad", "rap verse", "high note", "sân khấu",
+    "lightstick", "phòng thu", "nhạc sĩ", "producer", "beat", "bản demo",
+    "thu âm", "luyện thanh", "giọng hát", "ca khúc chủ đề", "nhạc pop",
+    "nhạc rap", "nhạc bolero", "nhạc trẻ", "nhạc remix", "vũ công phụ họa",
+    "tai nghe kiểm âm", "bảng xếp hạng", "fandom", "anti-fan", "vé concert",
+    "encore", "hậu trường", "liveshow", "cover bài hát", "song ca",
+    "hòa âm phối khí", "trình diễn live", "đĩa nhạc", "nhạc số",
+    "karaoke", "trending YouTube"
+  ],
+
+  "Đồ vật hằng ngày": [
+    "điện thoại", "chìa khóa", "ví tiền", "tai nghe", "bình nước",
+    "bàn chải", "kem đánh răng", "sạc dự phòng", "áo khoác", "kính mát",
+    "nồi cơm điện", "remote", "quạt máy", "laptop", "khẩu trang",
+    "mũ bảo hiểm", "dép lê", "giày thể thao", "đồng hồ", "ô che mưa",
+    "áo mưa", "túi xách", "balo", "bút bi", "sổ tay", "ổ cắm điện",
+    "dây sạc", "chuột máy tính", "bàn phím", "ly nước", "gương",
+    "lược", "khăn giấy", "nước rửa tay", "máy sấy tóc", "đèn ngủ",
+    "dao cạo râu", "móc khóa", "hộp cơm", "bình giữ nhiệt", "tai nghe có dây"
+  ],
+
+
+  "Động vật": [
+    "mèo ta", "mèo mướp", "mèo vàng", "mèo tam thể", "mèo mun",
+    "mèo Anh lông ngắn", "mèo Anh lông dài", "mèo Ba Tư", "mèo Xiêm",
+    "mèo Bengal", "mèo Sphynx", "mèo tai cụp", "mèo tây", "chó",
+    "chó ta", "chó cảnh", "chó Phú Quốc", "chó Poodle", "chó Golden",
+    "Golden Retriever", "chó Husky", "chó Alaska", "chó Corgi",
+    "chó Chihuahua", "chó Becgie", "chó Shiba", "gà", "gà trống", "gà Đông Tảo",
+    "gà mái", "vịt trời", "ngan", "ngỗng", "trâu", "bò", "bê con",
+    "cá vàng", "cá koi","cá chép","chim sáo", "chim bồ câu", "chim vẹt",
+    "thỏ", "rùa mắt đỏ", "khỉ đít đỏ","khỉ đầu chó", "voi bản đôn", "hổ","hổ giấy", "sư tử", "cá heo",
+    "chim cánh cụt", "hamster đuôi dài", "chuột lang", "nhím", "sóc", "gấu trúc Trung Quốc", "gấu trúc đỏ", 
+    "cừu", "dê", "lợn", "lợn rừng", "hươu", "nai", "cá sấu", "cá mập", "rắn", "rắn hổ mang", "rắn cạp nia", 
+    "rắn ráo trâu", "rắn lục", "rắn gấm", "rắn hổ mang chúa", "rắn hổ mang đất", "rắn hổ mang nước",
+  ],
+
+  "Nghề nghiệp": [
+    "bác sĩ", "y tá", "dược sĩ", "giáo viên", "giảng viên",
+    "lập trình viên", "shipper", "đầu bếp", "phụ bếp", "ca sĩ",
+    "diễn viên", "người mẫu", "công an", "bộ đội", "phi công",
+    "tiếp viên hàng không", "nông dân", "thiết kế", "thiết kế đồ họa",
+    "thợ cắt tóc", "barista", "hướng dẫn viên", "kế toán", "luật sư",
+    "kiến trúc sư", "kỹ sư", "thợ điện", "thợ sửa xe", "tài xế",
+    "bảo vệ", "nhân viên văn phòng", "nhân viên bán hàng", "thu ngân",
+    "streamer", "YouTuber", "TikToker", "nhiếp ảnh gia", "biên tập viên",
+    "phóng viên", "MC", "đạo diễn", "thợ xây", "nhân viên ngân hàng", 
+    "thợ may", "thợ mộc", "thợ hàn", "thợ sơn", "thợ điện lạnh",
+  ],
+
+  "Mạng xã hội": [
+    "Facebook", "TikTok", "Instagram", "YouTube", "Zalo", "Threads",
+    "story", "livestream", "hashtag", "comment dạo", "inbox", "filter",
+    "reels", "viral", "follow", "unfollow", "block", "reaction",
+    "like", "share", "subscribe", "kênh YouTube", "tường nhà",
+    "ảnh đại diện", "ảnh bìa", "bio", "caption", "trend", "duet",
+    "stitch", "tin nhắn thoại", "nhóm chat", "fanpage", "group",
+    "thả tim", "thả haha", "check-in", "tag bạn bè", "bình luận",
+    "lướt newsfeed", "thuật toán đề xuất", "flop", "tăng tương tác",
+    "nick clone", "story close friend"
+  ],
+
+  "Game nổi tiếng": [
+    "Liên Quân", "Free Fire", "PUBG", "Minecraft", "Among Us", "Roblox",
+    "FIFA Online", "Valorant", "Genshin Impact", "Tốc Chiến", "Audition",
+    "Play Together", "Candy Crush", "Đấu Trường Chân Lý",
+    "Liên Minh Huyền Thoại", "CS2", "Dota 2", "GTA V", "Fortnite",
+    "Call of Duty", "Clash of Clans", "Clash Royale", "Hay Day",
+    "Mobile Legends", "Pokémon GO", "Subway Surfers", "Temple Run",
+    "Plants vs Zombies", "The Sims", "Elden Ring", "God of War",
+    "Black Myth Wukong", "Honkai Star Rail", "Teamfight Tactics",
+    "Fall Guys", "Stardew Valley", "Terraria", "Apex Legends",
+    "Overwatch", "Warcraft", "Diablo"
+  ],
+
+  "Thương hiệu": [
+    "Apple", "Samsung", "Xiaomi", "Oppo", "Vivo", "Nokia", "Sony",
+    "LG", "Google", "Microsoft", "Meta", "Facebook", "TikTok",
+    "YouTube", "Netflix", "Spotify", "Shopee", "Lazada", "Tiki",
+    "Grab", "Be", "Gojek", "Highlands Coffee", "Phúc Long",
+    "The Coffee House", "Trung Nguyên", "Vinamilk", "TH True Milk",
+    "Milo", "Coca-Cola", "Pepsi", "Red Bull", "Honda", "Yamaha",
+    "Toyota", "VinFast", "Mercedes-Benz", "BMW", "Nike", "Adidas",
+    "Puma", "Converse", "Vans", "Uniqlo", "Gucci", "Louis Vuitton",
+    "Dior", "Chanel", "Rolex", "Casio", "McDonald's", "KFC", "Lotteria"
+  ],
+
+  "Siêu năng lực": [
+    "tàng hình", "dịch chuyển tức thời", "bay lượn", "đọc suy nghĩ",
+    "điều khiển thời gian", "ngưng đọng thời gian", "quay ngược thời gian",
+    "siêu sức mạnh", "siêu tốc độ", "bất tử", "hồi phục nhanh",
+    "biến hình", "nhân bản", "điều khiển lửa", "điều khiển nước",
+    "điều khiển gió", "điều khiển đất", "đóng băng", "phóng điện",
+    "đọc ký ức", "xóa ký ức", "thôi miên", "dịch chuyển đồ vật",
+    "nói chuyện với động vật", "thở dưới nước", "nhìn xuyên tường",
+    "tiên tri", "điều khiển giấc mơ", "tạo khiên năng lượng",
+    "hấp thụ sức mạnh", "dịch chuyển qua không gian", "biến nhỏ",
+    "biến khổng lồ", "tạo ảo ảnh", "tái sinh", "đi xuyên tường",
+    "điều khiển trọng lực", "phân thân", "tàng hình người khác",
+    "triệu hồi quái vật", "đọc cảm xúc", "dịch chuyển linh hồn"
+  ],
+
+  "Cơ thể và sức khỏe": [
+    "đầu", "mắt", "mũi", "miệng", "tai", "răng", "lưỡi", "cổ",
+    "vai", "tay", "bàn tay", "ngón tay", "chân", "bàn chân",
+    "đầu gối", "tim", "phổi", "dạ dày", "gan", "xương", "cơ bắp",
+    "da", "tóc", "móng tay", "đau đầu", "đau bụng", "sốt", "ho",
+    "sổ mũi", "cảm cúm", "dị ứng", "đau răng", "mất ngủ", "mệt mỏi",
+    "đau mắt", "đau tai", "đau cổ", "đau vai", "đau lưng", "đau chân",
+    "tập thể dục", "ăn kiêng", "uống nước", "khám bệnh", "bác sĩ",
+    "thuốc", "vitamin", "sức đề kháng", "huyết áp", "nhịp tim",
+    "cân nặng", "chiều cao", "đau lưng", "đau họng", "chóng mặt",
+    "khẩu trang y tế", "nước muối sinh lý"
+  ],
+
+  "Sở thích và hoạt động": [
+    "đọc sách", "nghe nhạc", "xem phim", "xem YouTube", "chơi game",
+    "vẽ tranh", "chụp ảnh", "quay video", "du lịch", "nấu ăn",
+    "làm bánh", "cắm trại", "leo núi", "chạy bộ", "đạp xe",
+    "bơi lội", "đá bóng", "cầu lông", "tập gym", "yoga",
+    "mua sắm", "đi cà phê", "hát karaoke", "nhảy múa", "chơi đàn guitar",
+    "chơi piano", "viết nhật ký", "làm đồ handmade", "trồng cây",
+    "nuôi thú cưng", "sưu tầm mô hình", "sưu tầm giày", "học ngoại ngữ",
+    "lướt mạng xã hội", "đi dạo", "ngắm hoàng hôn", "câu cá",
+    "chơi cờ", "xem bóng đá", "nghe podcast", "thiền", "đi picnic",
+    "làm vlog", "săn sale"
+  ],
+
+  "Tình yêu và lãng mạn": [
+    "crush", "người yêu", "bạn trai", "bạn gái", "hẹn hò", "tỏ tình","yêu đơn phương", "mập mờ",
+    "cầu hôn", "đám cưới", "nhẫn cưới", "hoa hồng", "socola","lời tỏ tình",
+    "quà kỷ niệm", "tin nhắn chúc ngủ ngon", "nắm tay", "ôm", "hôn","tình đầu","yêu xa",
+    "gặp mặt lần đầu", "đi xem phim", "đi ăn tối", "đi dạo phố","nắm tay","đi công viên",
+    "ngắm hoàng hôn Hồ Tây", "chụp ảnh đôi", "áo đôi", "biệt danh người yêu",
+    "ghen", "giận dỗi", "làm lành", "chia tay", "quay lại", "yêu xa",
+    "kỷ niệm ngày yêu", "Valentine", "trái tim", "thư tay", "bó hoa",
+    "bữa tối lãng mạn", "candle light dinner", "chuyến du lịch đôi",
+    "nhạc tình yêu", "phim ngôn tình", "thả thính", "first date",
+    "match dating app", "hôn lễ", "ảnh cưới", "tuần trăng mật"
+  ],
+
+  "Quốc gia và thành phố": [
+    "Việt Nam", "Hà Nội", "TP Hồ Chí Minh", "Đà Nẵng", "Huế", "Hội An",
+    "Cần Thơ", "Đà Lạt", "Nha Trang", "Hạ Long", "Singapore",
+    "Thái Lan", "Bangkok", "Nhật Bản", "Tokyo", "Hàn Quốc", "Seoul",
+    "Trung Quốc", "Bắc Kinh", "Thượng Hải", "Đài Loan", "Đài Bắc",
+    "Mỹ", "New York", "Los Angeles", "Washington DC", "Pháp", "Paris",
+    "Anh", "London", "Ý", "Rome", "Venice", "Đức", "Berlin",
+    "Tây Ban Nha", "Madrid", "Úc", "Sydney", "Melbourne", "Canada",
+    "Toronto", "Nga", "Moscow", "Ấn Độ", "New Delhi", "Brazil",
+    "Rio de Janeiro", "Dubai", "UAE", "Malaysia", "Kuala Lumpur"
+  ],
+
+  "Phim và truyện": [
+    "Doraemon", "Conan", "One Piece", "Naruto", "Dragon Ball",
+    "Harry Potter", "Avengers", "Spider-Man", "Batman", "Superman",
+    "Iron Man", "Captain America", "Frozen", "Toy Story", "Minions",
+    "Kung Fu Panda", "Shin cậu bé bút chì", "Attack on Titan",
+    "Demon Slayer", "Jujutsu Kaisen", "Your Name", "Titanic",
+    "Fast and Furious", "Wednesday", "Squid Game", "Reply 1988",
+    "Hậu duệ mặt trời", "Goblin", "Penthouse", "Về nhà đi con",
+    "Mắt biếc", "Tôi thấy hoa vàng trên cỏ xanh", "Bố già",
+    "Mai", "Lật mặt", "Doctor Strange", "Thor", "Black Panther",
+    "Alice in Wonderland", "The Lion King", "Death Note", "Bleach"
+  ],
+
+  "Đồ công nghệ": [
+    "điện thoại", "laptop", "máy tính bảng", "tai nghe bluetooth",
+    "loa bluetooth", "sạc dự phòng", "cáp sạc", "củ sạc nhanh",
+    "chuột máy tính", "bàn phím cơ", "màn hình", "PC gaming",
+    "card đồ họa", "camera", "máy ảnh", "flycam", "đồng hồ thông minh",
+    "Apple Watch", "AirPods", "USB", "ổ cứng", "SSD", "wifi",
+    "router", "máy in", "máy chiếu", "micro thu âm", "webcam",
+    "máy chơi game", "Nintendo Switch", "PlayStation", "Xbox",
+    "kính thực tế ảo", "pin sạc", "ổ cắm thông minh", "đèn LED RGB",
+    "robot hút bụi", "camera an ninh", "máy đọc sách", "tablet Android"
+  ],
+
+  "Thời tiết": [
+    "nắng", "mưa", "gió", "bão", "sấm sét", "cầu vồng", "mây đen",
+    "trời âm u", "trời se lạnh", "trời oi bức", "nồm ẩm", "sương mù",
+    "mưa phùn", "mưa rào", "mưa đá", "ngập đường", "áp thấp nhiệt đới",
+    "nắng gắt", "cháy nắng", "rét đậm", "rét hại", "gió mùa đông bắc",
+    "không khí lạnh", "mùa hè", "mùa đông", "mùa xuân", "mùa thu",
+    "dự báo thời tiết", "ô che mưa", "áo mưa", "trời quang mây",
+    "mưa lớn", "lốc xoáy", "mưa dông", "độ ẩm cao", "nhiệt độ thấp",
+    "nhiệt độ cao", "hanh khô", "trời mát", "trời rét", "mưa ngâu"
+  ]
     };
 
     const DEFAULT_NAMES = ["Minh", "Linh", "An", "Vy", "Nam", "Hà", "Phúc", "Trang", "Khoa", "Nhi", "Quân", "Mai", "Duy", "Huyền", "Tuấn", "Thảo", "Long", "Ngọc", "Bảo", "Khánh"];
