@@ -387,6 +387,11 @@
       font-weight: 700;
     }
 
+    .status-continue {
+      margin-top: 14px;
+      width: fit-content;
+    }
+
     .screen-back {
       width: fit-content;
       margin-bottom: 14px;
@@ -554,6 +559,31 @@
       line-height: 1.55;
       font-weight: 800;
       font-size: 1.05rem;
+    }
+
+    .starter-card {
+      width: min(520px, 100%);
+      margin: 0 auto 24px;
+      padding: 16px;
+      border-radius: 18px;
+      border: 1px solid rgba(255, 209, 102, 0.34);
+      background: linear-gradient(135deg, rgba(255, 209, 102, 0.16), rgba(255, 62, 165, 0.12));
+      box-shadow: 0 0 34px rgba(255, 209, 102, 0.14);
+    }
+
+    .starter-label {
+      color: var(--yellow);
+      font-size: 0.82rem;
+      font-weight: 950;
+      text-transform: uppercase;
+    }
+
+    .starter-name {
+      margin-top: 8px;
+      font-size: clamp(1.45rem, 7vw, 2.5rem);
+      line-height: 1;
+      font-weight: 950;
+      overflow-wrap: anywhere;
     }
 
     .result.revealed {
@@ -799,6 +829,7 @@
             <p class="status-kicker">Xem vai bí mật</p>
             <h2 class="status-title">Từng người bấm tên mình</h2>
             <p class="status-copy">Sau khi xem, bấm “Ẩn lại”. Người khác không được nhìn màn hình.</p>
+            <button class="ghost-btn status-continue hidden" id="continueDiscussionBtn" type="button">Tiếp tục thảo luận</button>
           </div>
           <div class="counter-ring" id="viewCounter" style="--progress: 0deg">0/0</div>
         </div>
@@ -811,6 +842,10 @@
         <button class="ghost-btn screen-back" id="backToRolesBtn" type="button">← Quay lại xem vai</button>
         <h2 class="big-title">Bắt đầu thảo luận</h2>
         <p class="big-copy">Mọi người hãy đặt câu hỏi, mô tả vòng vo, phản biện và tìm ra ai là Imposter trước khi lộ quá nhiều gợi ý.</p>
+        <div class="starter-card">
+          <div class="starter-label">Người bắt đầu vòng chơi</div>
+          <div class="starter-name" id="starterName"></div>
+        </div>
         <button class="danger-btn" id="showResultBtn" type="button">Hiển thị kẻ mạo danh</button>
       </div>
     </section>
@@ -1217,12 +1252,14 @@
       playerInputs: $("#playerInputs"),
       roleButtons: $("#roleButtons"),
       viewCounter: $("#viewCounter"),
+      continueDiscussionBtn: $("#continueDiscussionBtn"),
       roleModal: $("#roleModal"),
       secretFor: $("#secretFor"),
       secretWord: $("#secretWord"),
       secretTopic: $("#secretTopic"),
       hideRoleBtn: $("#hideRoleBtn"),
       cancelRoleBtn: $("#cancelRoleBtn"),
+      starterName: $("#starterName"),
       resultCard: $("#resultCard"),
       resultImposters: $("#resultImposters"),
       resultWord: $("#resultWord"),
@@ -1386,6 +1423,7 @@
         topic,
         word,
         imposterIndexes,
+        starterIndex: Math.floor(Math.random() * finalPlayers.length),
         seen: new Set()
       };
 
@@ -1414,6 +1452,7 @@
       const deg = total ? Math.round((seen / total) * 360) : 0;
       els.viewCounter.textContent = `${seen}/${total}`;
       els.viewCounter.style.setProperty("--progress", `${deg}deg`);
+      els.continueDiscussionBtn.classList.toggle("hidden", seen !== total);
     }
 
     function openRole(index) {
@@ -1438,8 +1477,13 @@
       renderRoleButtons();
       updateProgress();
       if (game.seen.size === game.players.length) {
-        window.setTimeout(() => showScreen(els.discussionScreen), 360);
+        window.setTimeout(showDiscussion, 360);
       }
+    }
+
+    function showDiscussion() {
+      els.starterName.textContent = game.players[game.starterIndex];
+      showScreen(els.discussionScreen);
     }
 
     function cancelRoleView() {
@@ -1500,6 +1544,7 @@
     $("#backSetupBtn").addEventListener("click", () => showScreen(els.setupScreen));
     $("#backToSetupBtn").addEventListener("click", () => showScreen(els.setupScreen));
     $("#backToRolesBtn").addEventListener("click", () => showScreen(els.rolesScreen));
+    $("#continueDiscussionBtn").addEventListener("click", showDiscussion);
     $("#guideBtn").addEventListener("click", openGuide);
     $("#closeGuideBtn").addEventListener("click", closeGuide);
 
