@@ -894,7 +894,7 @@
       <ol>
         <li>Nhập tên người chơi, chọn số Imposter và chủ đề.</li>
         <li>Bắt đầu game, từng người tự bấm tên mình để xem vai.</li>
-        <li>Người thường thấy từ khóa bí mật. Imposter chỉ biết mình là kẻ mạo danh.</li>
+        <li>Ai cũng thấy chủ đề. Người thường thấy thêm từ khóa bí mật, Imposter chỉ biết mình là kẻ mạo danh.</li>
         <li>Sau khi tất cả đã xem, cả nhóm thảo luận và vote nghi phạm.</li>
         <li>Bấm hiển thị kết quả để xem Imposter, từ khóa và chủ đề.</li>
       </ol>
@@ -1462,7 +1462,7 @@
       els.secretFor.textContent = `Vai của ${game.players[index]}`;
       els.secretWord.textContent = isImposter ? "Bạn là KẺ MẠO DANH" : game.word;
       els.secretWord.classList.toggle("imposter", isImposter);
-      els.secretTopic.textContent = isImposter ? "Hãy bình tĩnh và đoán từ khóa" : `Chủ đề: ${game.topic}`;
+      els.secretTopic.textContent = `Chủ đề: ${game.topic}`;
       els.roleModal.classList.add("open");
       document.body.style.overflow = "hidden";
       beep("role");
