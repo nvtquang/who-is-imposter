@@ -537,6 +537,18 @@
       font-weight: 900;
     }
 
+    .secret-bonus {
+      margin: -10px auto 24px;
+      padding: 12px 14px;
+      width: min(360px, 100%);
+      border-radius: 16px;
+      border: 1px solid rgba(185, 255, 77, 0.32);
+      background: rgba(185, 255, 77, 0.1);
+      color: var(--lime);
+      font-weight: 950;
+      overflow-wrap: anywhere;
+    }
+
     .discussion, .result {
       width: min(780px, 100%);
       margin: 0 auto;
@@ -881,6 +893,7 @@
       <p class="secret-for" id="secretFor"></p>
       <h2 class="secret-word" id="secretWord"></h2>
       <div class="secret-topic" id="secretTopic"></div>
+      <div class="secret-bonus hidden" id="secretBonus"></div>
       <div class="footer-actions">
         <button class="primary-btn" id="hideRoleBtn" type="button">Ẩn lại</button>
         <button class="ghost-btn" id="cancelRoleBtn" type="button">Quay lại</button>
@@ -1237,6 +1250,7 @@
 
     const DEFAULT_NAMES = ["Minh", "Linh", "An", "Vy", "Nam", "Hà", "Phúc", "Trang", "Khoa", "Nhi", "Quân", "Mai", "Duy", "Huyền", "Tuấn", "Thảo", "Long", "Ngọc", "Bảo", "Khánh"];
     const RULES_TEXT = "Who Is Imposter: Mỗi người lần lượt xem vai bí mật. Người thường thấy cùng một từ khóa, Imposter không biết từ khóa. Sau đó cả nhóm thảo luận và vote ai là Imposter. Cuối cùng bấm reveal để xem Imposter, chủ đề và từ khóa thật.";
+    const SPECIAL_KEYWORD_NAME = "quang";
 
     const $ = (selector) => document.querySelector(selector);
     const els = {
@@ -1257,6 +1271,7 @@
       secretFor: $("#secretFor"),
       secretWord: $("#secretWord"),
       secretTopic: $("#secretTopic"),
+      secretBonus: $("#secretBonus"),
       hideRoleBtn: $("#hideRoleBtn"),
       cancelRoleBtn: $("#cancelRoleBtn"),
       starterName: $("#starterName"),
@@ -1459,10 +1474,13 @@
       if (activeRoleIndex !== null) return;
       activeRoleIndex = index;
       const isImposter = game.imposterIndexes.includes(index);
+      const canSecretlySeeWord = isImposter && game.players[index].trim().toLocaleLowerCase("vi-VN") === SPECIAL_KEYWORD_NAME;
       els.secretFor.textContent = `Vai của ${game.players[index]}`;
       els.secretWord.textContent = isImposter ? "Bạn là KẺ MẠO DANH" : game.word;
       els.secretWord.classList.toggle("imposter", isImposter);
       els.secretTopic.textContent = `Chủ đề: ${game.topic}`;
+      els.secretBonus.textContent = canSecretlySeeWord ? `Từ khóa: ${game.word}` : "";
+      els.secretBonus.classList.toggle("hidden", !canSecretlySeeWord);
       els.roleModal.classList.add("open");
       document.body.style.overflow = "hidden";
       beep("role");
